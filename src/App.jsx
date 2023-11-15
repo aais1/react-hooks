@@ -1,4 +1,4 @@
-import { useState ,useCallback } from 'react'
+import { useState ,useCallback,useEffect } from 'react'
 import './App.css'
 
 function App() {
@@ -14,11 +14,15 @@ function App() {
     if(charAllow) str+="@#$%^&*()/<{:.~"
 
     for(let i=0;i<length;i++){
-      pass+=str[Math.floor((Math.random()*str.length)+1)];
+      pass+=str[Math.floor((Math.random()*str.length))];
     }
     setPass(pass);
-  },'[lenght,noAllow,charAllow,setPass]');
+  },[length,noAllow,charAllow,setPass]);
 
+  useEffect(()=>{
+    passGenerator();
+  },[length,noAllow,charAllow,])
+  
   return (
     <>
       <div className='w-full max-w-md mx-auto shadow-md p-8 my-8 bg-gray-700 text-orange-500 rounded-xl'>
@@ -27,11 +31,11 @@ function App() {
         <input 
         type="text"
         value={pass}
-        className='outline-none w-full py-1 px-3'
+        className='outline-none w-full py-1 px-3 rounded-tl-md rounded-bl-md'
         placeholder='Password'
         readOnly
         />  
-        <button className='outline-none bg-blue-700 text-white px-3 py-0.6 shrink-0'>Copy</button>
+        <button className='outline-none bg-blue-700 text-white px-3 py-0.6 shrink-0 rounded-tr-md rounded-br-md'>Copy</button>
        </div>
        <div className='flex text-sm gap-x-2'>
         <div className='flex item-center gap-x-1'>
@@ -44,6 +48,24 @@ function App() {
           onChange={(e)=>{setLength(e.target.value)}}
            />
           <label>Length :{length}</label>
+        </div>
+        <div className='flex item-center gap-x-1'>
+          <input 
+          type="checkbox"
+          value={charAllow}
+          className='cursor-pointer'
+          onClick={()=>{charAllow?setcharAllow(false):setcharAllow(true)}}
+           />
+          <label>Characters</label>
+        </div>
+        <div className='flex item-center gap-x-1'>
+          <input 
+          type="checkbox"
+          value={noAllow}
+          className='cursor-pointer'
+          onClick={()=>{noAllow?setnoAllow(false):setnoAllow(true)}}
+           />
+          <label>Numbers</label>
         </div>
        </div>
       </div>
